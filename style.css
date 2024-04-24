@@ -17,11 +17,6 @@ button {
     cursor: pointer;
 }
 
-#settings {
-    font-size: 62px;
-    border: none;
-    background-color: transparent;
-}
 
 #menu {
     display: flex;

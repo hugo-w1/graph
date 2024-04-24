@@ -15,7 +15,7 @@
 <body>
     <main>
         <canvas id="cvs" width="700" height="400"></canvas>
-        <button id="settings">&#9881;</button>
+        <button id="settings">settings</button>
         <button id="upload_data">Upload data</button>
 
         <div id="menu" style="display: none;">
@@ -35,14 +35,14 @@
                 <div class="setting">
                     <div class="space">
                         <label for="spacing">X-value Spacing</label>
-                        <input type="range" max="100" min="1" name="spacing" id="spacing" value="1">
+                        <input type="range" max="25" min="1" name="spacing" id="spacing" value="1">
                         <p id="space_amount">1</p>
                     </div>
                 </div>
                 <div class="setting">
                     <div class="space">
                         <label for="spacing">Dot Spacing</label>
-                        <input type="range" max="100" min="1" name="spacing" id="dot_spacing" value="1">
+                        <input type="range" max="25" min="1" name="spacing" id="dot_spacing" value="1">
                         <p id="dot_space_amount">1</p>
                     </div>
                 </div>
@@ -68,10 +68,10 @@
                 <h2 class="column_num">Y-Text column = <span>[<input class="colunm_input" id="col2" type="number"
                             min="0"></span>].text</h2>
                     <br>
-                <h2 class="column_num">X-Key column = <span>[<input class="colunm_input" id="col4" type="number"
+                <h2 class="column_num">X-Value column = <span>[<input class="colunm_input" id="col3" type="number"
                             min="0"></span>].value</h2>
 
-                <h2 class="column_num">Y-Value column = <span>[<input class="colunm_input" id="col3" type="number"
+                <h2 class="column_num">Y-Value column = <span>[<input class="colunm_input" id="col4" type="number"
                             min="0"></span>].value</h2>
 
 
@@ -81,6 +81,9 @@
                 <button class="save" id="save_upload">Save</button>
             </div>
         </div>
+
+
+
     </main>
 
 

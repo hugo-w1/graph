@@ -142,7 +142,10 @@ function drawGraphInteraction(clientX) {
 cvs.addEventListener('mousemove', (e) => {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
 
+    if(data.graph_data.length > 0){
     drawGraph();
+    }
+
     drawGraphInteraction(e.clientX);
 
     ctx.beginPath();
