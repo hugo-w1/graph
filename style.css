@@ -17,6 +17,22 @@ button {
     cursor: pointer;
 }
 
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
 
 #menu {
     display: flex;
@@ -79,14 +95,16 @@ button {
     transition: 200ms;
 }
 
-#upload_menu{
+#upload_menu {
     overflow-y: auto;
 }
-#paste_upload{
+
+#paste_upload {
     max-width: 99%;
     width: 99%;
 }
-#column_settings{
+
+#column_settings {
     width: 100%;
 
 }
@@ -109,10 +127,11 @@ button {
     background-color: rgb(29, 29, 146);
 }
 
-.colunm_input{
+.colunm_input {
     width: 30px;
 }
-.column_num{
+
+.column_num {
     font-size: 18px;
     font-family: Arial, Helvetica, sans-serif;
 }

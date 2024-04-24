@@ -5,55 +5,82 @@ ctx.font = "20px Arial";
 let settings = [
     20, //font size
     'red', //font color
-    1, // x-value spacing
+    2, // x-value spacing
     1   //dot spacing
 ];
 
-let data = {
-    "columns": [],
-    "info": [],
-    "graph_data": []
-};
-let positions = [];
+class dataClass {
+    #generateId() {
+        let chars = 'QWERTYUIOPASDFGHJKL1234567890';
+        let tmp = '';
+        for (let i = 0; i < 5; i++) {
+            tmp += chars[Math.ceil(Math.random() * chars.length)];
+        }
+        return tmp;
+    }
+
+    constructor(columns, info, data, positions, color) {
+        this.columns = columns;
+        this.info = info;
+        this.data = data;
+        this.positions = positions;
+        this.color = color;
+        this.id = this.#generateId();
+    }
+
+}
+
+
+let data = [];
 
 //loadFile();
 async function loadFile() {
     //fetch file
-    await fetch('data/befolkning.json')
+    await fetch('data/men.json')
         .then(response => response.json())
         .then(response => {
             console.log(response);
-            data.columns.push(response.columns[0].text);
-            data.columns.push(response.columns[1].text);
-            data.info.push(response.metadata[0].label);
+
+            let newGraphData = [];
 
             response.data.forEach(element => {
-                data.graph_data.push({
+                newGraphData.push({
                     count: parseInt(element.values[0]),
-                    year: element.key[0]
+                    year: element.key[1]
                 });
             });
-        });
 
-    calculateGraph();
+            let newData = new dataClass(
+                [response.columns[2].text, response.columns[1].text],
+                [response.metadata[0].label],
+                newGraphData,
+                calculateGraph(newGraphData),
+                'blue'
+            );
+            console.log(newData);
+
+            data.push(newData);
+
+        });
+    drawGraph();
 }
 
 
-function maxYCount() {
+function maxYCount(graphData) {
     let max = 0;
-    for (let i = 0; i < data.graph_data.length; i++) {
-        if (data.graph_data[i].count > max) {
-            max = data.graph_data[i].count;
+    for (let i = 0; i < graphData.length; i++) {
+        if (graphData[i].count > max) {
+            max = graphData[i].count;
         }
     }
     return max;
 }
 
-function outOfCanvas(clientX, i) {
+function outOfCanvas(clientX, i, graphData) {
     //make the text not go outside screen
-    if (clientX >= cvs.width / 2) {
+    if (clientX >= cvs.width / 1.5) {
         //calculate offset with fontsize
-        let offset = (data.graph_data[i].count.toString().length + data.columns[1].length) * settings[0] / 1.5;
+        let offset = (graphData.data[i].count.toString().length + graphData.columns[0].length) * settings[0] / 1.5;
         return -offset;
     } else {
         return 10;
@@ -63,37 +90,43 @@ function outOfCanvas(clientX, i) {
 function drawGraph() {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
 
-    //print graph label
-    ctx.fillStyle = "black";
-    ctx.fillText(data.info[0], 10, 20);
 
-    for (let i = 0; i < positions.length; i++) {
-        ctx.beginPath();
-        if (i == 0) {
-            ctx.lineTo(positions[i].x, positions[i].y);
-        } else {
-            ctx.moveTo(positions[i - 1].x, positions[i - 1].y);
-            ctx.lineTo(positions[i].x, positions[i].y);
+    data.forEach(data => {
+        //print graph label
+        ctx.fillStyle = "black";
+        ctx.fillText(data.info[0], 10, 20);
+
+        for (let i = 0; i < data.positions.length; i++) {
+            ctx.beginPath();
+            if (i == 0) {
+                ctx.lineTo(data.positions[i].x, data.positions[i].y);
+            } else {
+                ctx.moveTo(data.positions[i - 1].x, data.positions[i - 1].y);
+                ctx.lineTo(data.positions[i].x, data.positions[i].y);
+            }
+
+            if (i % settings[3] == 0) {
+                ctx.arc(data.positions[i].x, data.positions[i].y, 3, 0, 2 * Math.PI);
+            }
+
+
+            if (i % settings[2] == 0) {
+
+                ctx.fillText(data.data[i].year, data.positions[i].x, cvs.height - 20);
+            }
+            ctx.stroke();
         }
-
-        if (i % settings[3] == 0) {
-            ctx.arc(positions[i].x, positions[i].y, 3, 0, 2 * Math.PI);
-        }
-
-
-        if (i % settings[2] == 0) {
-
-            ctx.fillText(data.graph_data[i].year, positions[i].x, cvs.height - 20);
-        }
-        ctx.stroke();
-    }
+    });
 }
 
-function calculateGraph() {
+function calculateGraph(graphData) {
+
+    let positions = [];
 
     //canvas scale 
-    let xScale = cvs.width / (data.graph_data.length + 3);
-    let yScale = cvs.height / (maxYCount() + 1);
+    console.log(graphData);
+    let xScale = cvs.width / (graphData.length + 3);
+    let yScale = cvs.height / (maxYCount(graphData) + 1);
 
     console.log(xScale);
     console.log(yScale);
@@ -102,16 +135,19 @@ function calculateGraph() {
     let canvasX = xScale;
     let canvasY = cvs.height + 70;
 
-    for (let i = 0; i < data.graph_data.length; i++) {
+    for (let i = 0; i < graphData.length; i++) {
 
         let xCoord = canvasX;
-        let yCoord = canvasY - data.graph_data[i].count * yScale;
+        let yCoord = canvasY - graphData[i].count * yScale;
 
         positions.push({ x: xCoord, y: yCoord });
 
         canvasX += xScale;
     }
-    drawGraph();
+
+    return positions;
+
+    //drawGraph();
 
 }
 
@@ -120,30 +156,32 @@ function calculateGraph() {
  * @param {int} clientX cursor x positon on canvas
  */
 function drawGraphInteraction(clientX) {
-    for (let i = 0; i < positions.length; i++) {
-        //position marker interval
-        if (positions[i].x - 2 < clientX && positions[i].x + 2 > clientX) {
 
-            ctx.beginPath();
-            ctx.arc(positions[i].x, positions[i].y, 5, 0, 2 * Math.PI);
-            ctx.fillStyle = settings[1];
-            ctx.fill();
+    data.forEach(data => {
 
+        for (let i = 0; i < data.positions.length; i++) {
+            //position marker interval
+            if (data.positions[i].x - 2 < clientX && data.positions[i].x + 2 > clientX) {
 
-            //print information next to graph marker 
-            ctx.fillText(`${data.columns[0]}: ${data.graph_data[i].year}`, positions[i].x + outOfCanvas(clientX, i), positions[i].y + 50);
-            ctx.fillText(`${data.columns[1]}: ${data.graph_data[i].count}`, positions[i].x + outOfCanvas(clientX, i), positions[i].y + 30);
-            ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(data.positions[i].x, data.positions[i].y, 5, 0, 2 * Math.PI);
+                ctx.fillStyle = settings[1];
+                ctx.fill();
+                //print information next to graph marker 
+                ctx.fillText(`${data.columns[1]}: ${data.data[i].year}`, data.positions[i].x + outOfCanvas(clientX, i, data), data.positions[i].y + 50);
+                ctx.fillText(`${data.columns[0]}: ${data.data[i].count}`, data.positions[i].x + outOfCanvas(clientX, i, data), data.positions[i].y + 30);
+                ctx.stroke();
+            }
         }
-    }
+    });
 }
 
 //mouse events on canvas
 cvs.addEventListener('mousemove', (e) => {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
 
-    if(data.graph_data.length > 0){
-    drawGraph();
+    if (data.length > 0) {
+        drawGraph();
     }
 
     drawGraphInteraction(e.clientX);

@@ -18,6 +18,19 @@
         <button id="settings">settings</button>
         <button id="upload_data">Upload data</button>
 
+        <div>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Loaded data set</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Mexico</td>
+                </tr>
+            </table>
+        </div>
+
         <div id="menu" style="display: none;">
             <div class="top">
                 <h2>Settings</h2>
@@ -35,7 +48,7 @@
                 <div class="setting">
                     <div class="space">
                         <label for="spacing">X-value Spacing</label>
-                        <input type="range" max="25" min="1" name="spacing" id="spacing" value="1">
+                        <input type="range" max="25" min="1" name="spacing" id="spacing" value="2">
                         <p id="space_amount">1</p>
                     </div>
                 </div>
@@ -59,7 +72,7 @@
                 <h1>Upload Json</h1>
             </div>
             <div>
-                <textarea name="" id="paste_upload" cols="30" rows="10"></textarea>
+                <textarea placeholder="Paste json here" id="paste_upload" cols="30" rows="10"></textarea>
             </div>
             <div id="column_settings">
                 <h2 class="column_num">X-Text column = <span>[<input class="colunm_input" id="col1" type="number"
@@ -67,7 +80,7 @@
 
                 <h2 class="column_num">Y-Text column = <span>[<input class="colunm_input" id="col2" type="number"
                             min="0"></span>].text</h2>
-                    <br>
+                <br>
                 <h2 class="column_num">X-Value column = <span>[<input class="colunm_input" id="col3" type="number"
                             min="0"></span>].value</h2>
 

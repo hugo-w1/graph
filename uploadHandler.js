@@ -5,28 +5,45 @@ document.getElementById('save_upload').addEventListener('click', () => {
     let col3 = document.getElementById('col3').value;
     let col4 = document.getElementById('col4').value;
 
-
     let json = JSON.parse(document.getElementById('paste_upload').value);
 
-    data.columns.push(json.columns[col1].text);
-    data.columns.push(json.columns[col2].text);
-
-    data.info.push(json.metadata[0].label);
+    let newGraphData = [];
 
     json.data.forEach(element => {
-        data.graph_data.push({
+        newGraphData.push({
             count: parseInt(element.values[col4]),
             year: element.key[col3]
         });
     });
 
-    calculateGraph();
+    let newData = new dataClass(
+        [json.columns[2].text, json.columns[1].text],
+        [json.metadata[0].label],
+        newGraphData,
+        calculateGraph(newGraphData),
+        'blue'
+    );
+    data.push(newData);
+    drawGraph();
     document.getElementById('upload_menu').style.display = 'none';
 
 });
 
 document.getElementById('paste_upload').addEventListener('change', (e) => {
+
     let json = JSON.parse(e.target.value);
+    let keyValue = identifyKeyValue(json);
+
+    document.getElementById('col1').value = keyValue[0]; //Xcol
+    document.getElementById('col2').value = keyValue[1]; //Ycol
+
+    document.getElementById('col3').value = keyValue[0]; //Xcol
+    document.getElementById('col4').value = 0;
+
+});
+
+
+function identifyKeyValue(json) {
 
     let Xcol = json.columns.length - 2;
     let Ycol = json.columns.length - 1;
@@ -34,18 +51,5 @@ document.getElementById('paste_upload').addEventListener('change', (e) => {
     let x_key = json.columns[Xcol].text; //column for x-text
     let y_key = json.columns[Ycol].text; //column for y-text
 
-
-    console.log(Xcol, Ycol);
-    console.log(x_key, y_key);
-
-
-
-
-    document.getElementById('col1').value = Xcol;
-    document.getElementById('col2').value = Ycol;
-
-    document.getElementById('col3').value = Xcol;
-    document.getElementById('col4').value = 0;
-
-
-});
+    return ([Xcol, Ycol, x_key, y_key]);
+}
