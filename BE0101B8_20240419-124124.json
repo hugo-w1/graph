@@ -1,1 +1,217 @@
-{"columns":[{"code":"Tid","text":"år","type":"t"},{"code":"Antal personer som fått svenskt medborgarskap","text":"Antal personer som fått svenskt medborgarskap","type":"c"}],"comments":[],"data":[{"key":["2000"],"values":["43173"]},{"key":["2001"],"values":["35951"]},{"key":["2002"],"values":["37270"]},{"key":["2003"],"values":["32756"]},{"key":["2004"],"values":["28599"]},{"key":["2005"],"values":["39270"]},{"key":["2006"],"values":["50897"]},{"key":["2007"],"values":["33436"]},{"key":["2008"],"values":["30254"]},{"key":["2009"],"values":["29318"]},{"key":["2010"],"values":["32197"]},{"key":["2011"],"values":["36328"]},{"key":["2012"],"values":["49746"]},{"key":["2013"],"values":["49632"]},{"key":["2014"],"values":["42918"]},{"key":["2015"],"values":["48249"]},{"key":["2016"],"values":["60343"]},{"key":["2017"],"values":["68898"]},{"key":["2018"],"values":["63818"]},{"key":["2019"],"values":["64206"]},{"key":["2020"],"values":["80175"]},{"key":["2021"],"values":["89354"]},{"key":["2022"],"values":["92225"]},{"key":["2023"],"values":["67789"]}],"metadata":[{"infofile":"BE0101","updated":"2024-04-19T10:41:00Z","label":"Antal personer som fått svenskt medborgarskap efter år","source":"SCB"}]}
+{
+    "columns": [
+        {
+            "code": "Tid",
+            "text": "år",
+            "type": "t"
+        },
+        {
+            "code": "Antal personer som fått svenskt medborgarskap",
+            "text": "Antal personer som fått svenskt medborgarskap",
+            "type": "c"
+        }
+    ],
+    "comments": [],
+    "data": [
+        {
+            "key": [
+                "2000"
+            ],
+            "values": [
+                "43173"
+            ]
+        },
+        {
+            "key": [
+                "2001"
+            ],
+            "values": [
+                "35951"
+            ]
+        },
+        {
+            "key": [
+                "2002"
+            ],
+            "values": [
+                "37270"
+            ]
+        },
+        {
+            "key": [
+                "2003"
+            ],
+            "values": [
+                "32756"
+            ]
+        },
+        {
+            "key": [
+                "2004"
+            ],
+            "values": [
+                "28599"
+            ]
+        },
+        {
+            "key": [
+                "2005"
+            ],
+            "values": [
+                "39270"
+            ]
+        },
+        {
+            "key": [
+                "2006"
+            ],
+            "values": [
+                "50897"
+            ]
+        },
+        {
+            "key": [
+                "2007"
+            ],
+            "values": [
+                "33436"
+            ]
+        },
+        {
+            "key": [
+                "2008"
+            ],
+            "values": [
+                "30254"
+            ]
+        },
+        {
+            "key": [
+                "2009"
+            ],
+            "values": [
+                "29318"
+            ]
+        },
+        {
+            "key": [
+                "2010"
+            ],
+            "values": [
+                "32197"
+            ]
+        },
+        {
+            "key": [
+                "2011"
+            ],
+            "values": [
+                "36328"
+            ]
+        },
+        {
+            "key": [
+                "2012"
+            ],
+            "values": [
+                "49746"
+            ]
+        },
+        {
+            "key": [
+                "2013"
+            ],
+            "values": [
+                "49632"
+            ]
+        },
+        {
+            "key": [
+                "2014"
+            ],
+            "values": [
+                "42918"
+            ]
+        },
+        {
+            "key": [
+                "2015"
+            ],
+            "values": [
+                "48249"
+            ]
+        },
+        {
+            "key": [
+                "2016"
+            ],
+            "values": [
+                "60343"
+            ]
+        },
+        {
+            "key": [
+                "2017"
+            ],
+            "values": [
+                "68898"
+            ]
+        },
+        {
+            "key": [
+                "2018"
+            ],
+            "values": [
+                "63818"
+            ]
+        },
+        {
+            "key": [
+                "2019"
+            ],
+            "values": [
+                "64206"
+            ]
+        },
+        {
+            "key": [
+                "2020"
+            ],
+            "values": [
+                "80175"
+            ]
+        },
+        {
+            "key": [
+                "2021"
+            ],
+            "values": [
+                "89354"
+            ]
+        },
+        {
+            "key": [
+                "2022"
+            ],
+            "values": [
+                "92225"
+            ]
+        },
+        {
+            "key": [
+                "2023"
+            ],
+            "values": [
+                "67789"
+            ]
+        }
+    ],
+    "metadata": [
+        {
+            "infofile": "BE0101",
+            "updated": "2024-04-19T10:41:00Z",
+            "label": "Antal personer som fått svenskt medborgarskap efter år",
+            "source": "SCB"
+        }
+    ]
+}

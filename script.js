@@ -5,7 +5,8 @@ ctx.font = "20px Arial";
 let settings = [
     20, //font size
     'red', //font color
-    4 // x-value spacing
+    1, // x-value spacing
+    1   //dot spacing
 ];
 
 let data = {
@@ -15,7 +16,7 @@ let data = {
 };
 let positions = [];
 
-loadFile();
+//loadFile();
 async function loadFile() {
     //fetch file
     await fetch('data/befolkning.json')
@@ -50,11 +51,10 @@ function maxYCount() {
 
 function outOfCanvas(clientX, i) {
     //make the text not go outside screen
-    let pxOutside = clientX + data.graph_data[i].count.toString().length * settings[0] + data.columns[1].length * settings[0] ;
-    if (pxOutside >= cvs.width) {
-        let offset = 0;
-        offset = -data.graph_data[i].count.toString().length - data.columns[1].length * settings[0];
-        return offset;
+    if (clientX >= cvs.width / 2) {
+        //calculate offset with fontsize
+        let offset = (data.graph_data[i].count.toString().length + data.columns[1].length) * settings[0] / 1.5;
+        return -offset;
     } else {
         return 10;
     }
@@ -75,7 +75,10 @@ function drawGraph() {
             ctx.moveTo(positions[i - 1].x, positions[i - 1].y);
             ctx.lineTo(positions[i].x, positions[i].y);
         }
-        ctx.arc(positions[i].x, positions[i].y, 3, 0, 2 * Math.PI);
+
+        if (i % settings[3] == 0) {
+            ctx.arc(positions[i].x, positions[i].y, 3, 0, 2 * Math.PI);
+        }
 
 
         if (i % settings[2] == 0) {
@@ -149,28 +152,3 @@ cvs.addEventListener('mousemove', (e) => {
 });
 
 
-document.getElementById('settings').addEventListener('click', () => {
-    document.getElementById('menu').style.display = 'block';
-});
-
-document.getElementById('cancel_setting').addEventListener('click', () => {
-    document.getElementById('menu').style.display = 'none';
-});
-
-document.getElementById('spacing').addEventListener('change', (e) => {
-    document.getElementById('space_amount').innerText = e.target.value;
-});
-
-document.getElementById('save_setting').addEventListener('click', () => {
-
-    settings[0] = document.getElementById('fontsize').value;
-    ctx.font = `${settings[0]}px Arial`;
-    settings[1] = document.getElementById('color').value;
-    settings[2] = document.getElementById('spacing').value;
-
-
-
-    //draw graph with new settings and close the menu
-    drawGraph();
-    document.getElementById('menu').style.display = 'none';
-});

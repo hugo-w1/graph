@@ -13,14 +13,26 @@ canvas {
     border: 1px solid;
 }
 
+button {
+    cursor: pointer;
+}
+
 #settings {
     font-size: 62px;
     border: none;
     background-color: transparent;
-    cursor: pointer;
 }
 
 #menu {
+    display: flex;
+    border: 5px solid;
+    position: absolute;
+    width: 800px;
+    height: 500px;
+    background-color: gray;
+}
+
+#upload_menu {
     display: flex;
     border: 5px solid;
     position: absolute;
@@ -68,25 +80,44 @@ canvas {
     border: none;
     width: 50%;
     font-size: 28px;
-    cursor: pointer;
     color: white;
     transition: 200ms;
 }
 
-#save_setting {
+#upload_menu{
+    overflow-y: auto;
+}
+#paste_upload{
+    max-width: 99%;
+    width: 99%;
+}
+#column_settings{
+    width: 100%;
+
+}
+
+.save {
     background-color: rgb(18, 142, 18);
 }
 
-#cancel_setting {
+.cancel {
     background-color: rgb(76, 76, 226);
 }
 
 
 
-#save_setting:hover {
+.save:hover {
     background-color: rgb(15, 112, 15);
 }
 
-#cancel_setting:hover {
+.cancel:hover {
     background-color: rgb(29, 29, 146);
+}
+
+.colunm_input{
+    width: 30px;
+}
+.column_num{
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
 }
