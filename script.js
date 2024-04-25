@@ -5,27 +5,29 @@ ctx.font = "20px Arial";
 let settings = [
     20, //font size
     'red', //font color
-    2, // x-value spacing
+    5, // x-value spacing
     1   //dot spacing
 ];
 
 class dataClass {
-    #generateId() {
-        let chars = 'QWERTYUIOPASDFGHJKL1234567890';
-        let tmp = '';
-        for (let i = 0; i < 5; i++) {
-            tmp += chars[Math.ceil(Math.random() * chars.length)];
-        }
-        return tmp;
+    #setColor(id) {
+        let colors = ['red', 'blue', 'purple', 'green'];
+        return colors[id];
     }
 
-    constructor(columns, info, data, positions, color) {
+    #generateId() {
+        return data.length;
+
+    }
+
+    constructor(columns, info, data, positions) {
         this.columns = columns;
         this.info = info;
         this.data = data;
         this.positions = positions;
-        this.color = color;
         this.id = this.#generateId();
+        this.color = this.#setColor(this.id);
+
     }
 
 }
@@ -33,10 +35,11 @@ class dataClass {
 
 let data = [];
 
-//loadFile();
-async function loadFile() {
+loadFile('jönköping_invPerKm2.json');
+loadFile('habo_invPerKm2.json')
+async function loadFile(file) {
     //fetch file
-    await fetch('data/men.json')
+    await fetch(file)
         .then(response => response.json())
         .then(response => {
             console.log(response);
@@ -54,8 +57,7 @@ async function loadFile() {
                 [response.columns[2].text, response.columns[1].text],
                 [response.metadata[0].label],
                 newGraphData,
-                calculateGraph(newGraphData),
-                'blue'
+                calculateGraph(newGraphData)
             );
             console.log(newData);
 
@@ -157,23 +159,62 @@ function calculateGraph(graphData) {
  */
 function drawGraphInteraction(clientX) {
 
-    data.forEach(data => {
+    if (data.length > 1) {
+        for (let i = data.length - 1; i >= 1; i--) {
+            //loop over postisions
+            for (let j = 0; j < data[i].positions.length; j++) {
+                if (data[i].positions[j].x - 2 < clientX && data[i].positions[j].x + 2 > clientX) {
 
-        for (let i = 0; i < data.positions.length; i++) {
-            //position marker interval
-            if (data.positions[i].x - 2 < clientX && data.positions[i].x + 2 > clientX) {
+                    let information = [];
 
-                ctx.beginPath();
-                ctx.arc(data.positions[i].x, data.positions[i].y, 5, 0, 2 * Math.PI);
-                ctx.fillStyle = settings[1];
-                ctx.fill();
-                //print information next to graph marker 
-                ctx.fillText(`${data.columns[1]}: ${data.data[i].year}`, data.positions[i].x + outOfCanvas(clientX, i, data), data.positions[i].y + 50);
-                ctx.fillText(`${data.columns[0]}: ${data.data[i].count}`, data.positions[i].x + outOfCanvas(clientX, i, data), data.positions[i].y + 30);
-                ctx.stroke();
+                    //multi dimensional graph data
+                    for (let k = data.length - 1; k >= 0; k--) {
+                        console.log(data[i - k].data[j].count + ' :' + k);
+                        information.push([data[i - k].data[j].count, data[i - k].color, data[i - k].columns[0]]);
+                    }
+
+                    console.log(information);
+
+                    //put bounding box
+                    ctx.fillStyle = "lightgray";
+                    ctx.fillRect(data[i].positions[j].x + outOfCanvas(clientX, i, data[i]), data[i].positions[j].y, 200, 150);
+                    //put x-value in box
+                    ctx.fillStyle = "black";
+                    ctx.fillText(`${data[i].columns[1]}: ${data[i].data[j].year}`, data[i].positions[j].x + outOfCanvas(clientX, i, data[i]), data[i].positions[j].y + 20);
+
+                    let margin = 60;
+                    for (let a = 0; a < information.length; a++) {
+                        ctx.fillStyle = information[a][1];
+                        ctx.fillText(`${information[a][2]}: ${information[a][0]}`, data[i].positions[j].x + outOfCanvas(clientX, i, data[i]), data[i].positions[j].y + margin);
+                        margin += 20;
+
+                    }
+
+
+
+                }
             }
         }
-    });
+    } else {
+
+        data.forEach(data => {
+
+            for (let i = 0; i < data.positions.length; i++) {
+                //position marker interval
+                if (data.positions[i].x - 2 < clientX && data.positions[i].x + 2 > clientX) {
+
+                    ctx.beginPath();
+                    ctx.arc(data.positions[i].x, data.positions[i].y, 5, 0, 2 * Math.PI);
+                    ctx.fillStyle = settings[1];
+                    ctx.fill();
+                    //print information next to graph marker 
+                    ctx.fillText(`${data.columns[1]}: ${data.data[i].year}`, data.positions[i].x + outOfCanvas(clientX, i, data), data.positions[i].y + 50);
+                    ctx.fillText(`${data.columns[0]}: ${data.data[i].count}`, data.positions[i].x + outOfCanvas(clientX, i, data), data.positions[i].y + 30);
+                    ctx.stroke();
+                }
+            }
+        });
+    }
 }
 
 //mouse events on canvas

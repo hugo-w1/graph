@@ -20,8 +20,7 @@ document.getElementById('save_upload').addEventListener('click', () => {
         [json.columns[2].text, json.columns[1].text],
         [json.metadata[0].label],
         newGraphData,
-        calculateGraph(newGraphData),
-        'blue'
+        calculateGraph(newGraphData)
     );
     data.push(newData);
     drawGraph();
