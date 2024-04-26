@@ -20,11 +20,11 @@ class dataClass {
 
     }
 
-    constructor(columns, info, data, positions) {
+    constructor(columns, info, data) {
         this.columns = columns;
         this.info = info;
         this.data = data;
-        this.positions = positions;
+        this.positions = [];
         this.id = this.#generateId();
         this.color = this.#setColor(this.id);
 
@@ -35,8 +35,12 @@ class dataClass {
 
 let data = [];
 
-loadFile('jönköping_invPerKm2.json');
-loadFile('habo_invPerKm2.json')
+loadFile('habo_invPerKm2.json');
+//loadFile('jönköping_invPerKm2.json');
+
+
+
+
 async function loadFile(file) {
     //fetch file
     await fetch(file)
@@ -52,27 +56,42 @@ async function loadFile(file) {
                     year: element.key[1]
                 });
             });
+            console.log(newGraphData);
 
             let newData = new dataClass(
                 [response.columns[2].text, response.columns[1].text],
                 [response.metadata[0].label],
-                newGraphData,
-                calculateGraph(newGraphData)
+                newGraphData
             );
-            console.log(newData);
-
             data.push(newData);
+            addToTable(newData);
 
         });
     drawGraph();
+    calculateGraphPositions();
 }
 
 
-function maxYCount(graphData) {
+
+function calculateGraphPositions() {
+    let totalGraphData = [];
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].data.length; j++) {
+            totalGraphData.push([data[i].data[j].count, data[i].data[j].year]);
+        }
+    }
+    for (let i = 0; i < data.length; i++) {
+        data[i].positions = calculateGraph(data[i].data, totalGraphData);
+    }
+}
+
+
+
+function maxYCount(totalGraphData) {
     let max = 0;
-    for (let i = 0; i < graphData.length; i++) {
-        if (graphData[i].count > max) {
-            max = graphData[i].count;
+    for (let i = 0; i < totalGraphData.length; i++) {
+        if (totalGraphData[i][0] > max) {
+            max = totalGraphData[i][0];
         }
     }
     return max;
@@ -121,14 +140,14 @@ function drawGraph() {
     });
 }
 
-function calculateGraph(graphData) {
+function calculateGraph(graphData, totalGraphData) {
 
     let positions = [];
 
     //canvas scale 
     console.log(graphData);
     let xScale = cvs.width / (graphData.length + 3);
-    let yScale = cvs.height / (maxYCount(graphData) + 1);
+    let yScale = cvs.height / (maxYCount(totalGraphData));
 
     console.log(xScale);
     console.log(yScale);
@@ -233,4 +252,21 @@ cvs.addEventListener('mousemove', (e) => {
     ctx.stroke();
 });
 
+
+function addToTable(newData) {
+
+    let tr = document.createElement('tr');
+    let td1 = document.createElement('td')
+    let td2 = document.createElement('td')
+
+    td1.innerHTML = newData.id;
+    td2.innerHTML = newData.info[0];
+    td1.style.color = newData.color;
+    td2.style.color = newData.color;
+
+    tr.append(td1, td2);
+    document.getElementById('table').appendChild(tr);
+
+
+}
 

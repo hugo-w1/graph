@@ -17,12 +17,15 @@ document.getElementById('save_upload').addEventListener('click', () => {
     });
 
     let newData = new dataClass(
-        [json.columns[2].text, json.columns[1].text],
+        [json.columns[col2].text, json.columns[1].text],
         [json.metadata[0].label],
-        newGraphData,
-        calculateGraph(newGraphData)
+        newGraphData
     );
     data.push(newData);
+    addToTable(newData);
+
+    calculateGraphPositions();
+
     drawGraph();
     document.getElementById('upload_menu').style.display = 'none';
 
