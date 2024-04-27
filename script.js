@@ -111,33 +111,27 @@ function outOfCanvas(clientX, i, graphData) {
 function drawGraph() {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
 
-
-    data.forEach(data => {
-        //print graph label
-        ctx.fillStyle = "black";
-        ctx.fillText(data.info[0], 10, 20);
-
-        for (let i = 0; i < data.positions.length; i++) {
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].positions.length; j++) {
             ctx.beginPath();
-            if (i == 0) {
-                ctx.lineTo(data.positions[i].x, data.positions[i].y);
+            if (j == 0) {
+                ctx.lineTo(data[i].positions[j].x, data[i].positions[j].y);
             } else {
-                ctx.moveTo(data.positions[i - 1].x, data.positions[i - 1].y);
-                ctx.lineTo(data.positions[i].x, data.positions[i].y);
+                ctx.moveTo(data[i].positions[j - 1].x, data[i].positions[j - 1].y);
+                ctx.lineTo(data[i].positions[j].x, data[i].positions[j].y);
             }
 
-            if (i % settings[3] == 0) {
-                ctx.arc(data.positions[i].x, data.positions[i].y, 3, 0, 2 * Math.PI);
+            if (j % settings[3] == 0) {
+                ctx.arc(data[i].positions[j].x, data[i].positions[j].y, 3, 0, 2 * Math.PI);
             }
 
-
-            if (i % settings[2] == 0) {
-
-                ctx.fillText(data.data[i].year, data.positions[i].x, cvs.height - 20);
+            if (j % settings[2] == 0) {
+                ctx.fillStyle = 'black';
+                ctx.fillText(data[i].data[j].year, data[i].positions[j].x, cvs.height - 20);
             }
             ctx.stroke();
         }
-    });
+    }
 }
 
 function calculateGraph(graphData, totalGraphData) {
