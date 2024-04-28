@@ -36,10 +36,6 @@
                     <input type="number" min="1" max="50" id="fontsize" name="fontsize" value="20">
                 </div>
                 <div class="setting">
-                    <label for="color">Mark Color</label>
-                    <input type="color" name="color" id="color" value="#FF0000">
-                </div>
-                <div class="setting">
                     <div class="space">
                         <label for="spacing">X-value Spacing</label>
                         <input type="range" max="25" min="1" name="spacing" id="spacing" value="5">
@@ -53,7 +49,15 @@
                         <p id="dot_space_amount">1</p>
                     </div>
                 </div>
-
+                <div class="setting">
+                    <label for="yvaluecount">Y-value Count</label>
+                    <input type="checkbox" name="yvaluecount" id="yvaluecount">
+                </div>
+                <div class="setting">
+                    <label for="yvaluelines">Y-value Lines</label>
+                    <input type="checkbox" name="yvaluelines" id="yvaluelines">
+                </div>
+                
             </div>
             <div class="bottom">
                 <button class="cancel" id="cancel_setting">Cancel</button>

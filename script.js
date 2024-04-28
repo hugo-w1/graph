@@ -4,13 +4,19 @@ ctx.font = "20px Arial";
 
 let settings = [
     20, //font size
-    'red', //font color
+    'red', //font color [not editable]
     5, // x-value spacing
-    1   //dot spacing
+    1,   //dot spacing
+    false, // y-value-count
+    false // y-value-lines
 ];
 
 class dataClass {
     #setColor(id) {
+        if (id > 3) {
+            console.log('limit reached!');
+            return;
+        }
         let colors = ['red', 'blue', 'purple', 'green'];
         return colors[id];
     }
@@ -36,10 +42,7 @@ class dataClass {
 let data = [];
 
 loadFile('habo_invPerKm2.json');
-//loadFile('jönköping_invPerKm2.json');
-
-
-
+loadFile('jönköping_invPerKm2.json');
 
 async function loadFile(file) {
     //fetch file
@@ -111,6 +114,35 @@ function outOfCanvas(clientX, i, graphData) {
 function drawGraph() {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
 
+    let drawnValues = [];
+    ctx.fillStyle = 'black';
+    //draw Y-value-count to the left
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].positions.length; j++) {
+
+            //make sure it dosent draw the same number multiple times
+            if (j % 10 == 0) {
+
+                if (!drawnValues.includes(data[i].data[j].count)) {
+                    if (settings[4]) {
+                        ctx.fillText(data[i].data[j].count, 5, data[i].positions[j].y);
+                    }
+
+                    if (settings[5]) {
+                        ctx.moveTo(0, data[i].positions[j].y);
+                        ctx.lineTo(cvs.width, data[i].positions[j].y);
+                    }
+                    ctx.stroke();
+
+                    drawnValues.push(data[i].data[j].count);
+                }
+            }
+
+        }
+    }
+
+
+    //draw graph
     for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data[i].positions.length; j++) {
             ctx.beginPath();
@@ -140,15 +172,14 @@ function calculateGraph(graphData, totalGraphData) {
 
     //canvas scale 
     console.log(graphData);
-    let xScale = cvs.width / (graphData.length + 3);
-    let yScale = cvs.height / (maxYCount(totalGraphData));
+    let xScale = cvs.width / (graphData.length + 5); // add margin with 5 on both scales
+    let yScale = cvs.height / (maxYCount(totalGraphData) + 5);
 
-    console.log(xScale);
-    console.log(yScale);
 
+    console.log(yScale)
     //starting pos  
-    let canvasX = xScale;
-    let canvasY = cvs.height + 70;
+    let canvasX = xScale + 50;
+    let canvasY = cvs.height + yScale;
 
     for (let i = 0; i < graphData.length; i++) {
 
@@ -168,17 +199,26 @@ function calculateGraph(graphData, totalGraphData) {
 
 /**
  * Draws the interactions on canvas
+ * Iterates the data classes and prints data relative to clientX 
  * @param {int} clientX cursor x positon on canvas
  */
 function drawGraphInteraction(clientX) {
-
     if (data.length > 1) {
-        for (let i = data.length - 1; i >= 1; i--) {
+        for (let i = data.length - 1; i >= data.length - 1; i--) {
             //loop over postisions
             for (let j = 0; j < data[i].positions.length; j++) {
                 if (data[i].positions[j].x - 2 < clientX && data[i].positions[j].x + 2 > clientX) {
 
                     let information = [];
+
+                    //assing y as an dynamic int
+                    let y = data[i].positions[j].y;
+                    if (y > 255) {
+                        //do not make y go under screen
+                        y = 255;
+                    }
+
+                    console.log(y);
 
                     //multi dimensional graph data
                     for (let k = data.length - 1; k >= 0; k--) {
@@ -186,25 +226,21 @@ function drawGraphInteraction(clientX) {
                         information.push([data[i - k].data[j].count, data[i - k].color, data[i - k].columns[0]]);
                     }
 
-                    console.log(information);
-
                     //put bounding box
                     ctx.fillStyle = "lightgray";
-                    ctx.fillRect(data[i].positions[j].x + outOfCanvas(clientX, i, data[i]), data[i].positions[j].y, 200, 150);
+                    ctx.fillRect(data[i].positions[j].x + outOfCanvas(clientX, i, data[i]), y, 200, 150);
                     //put x-value in box
                     ctx.fillStyle = "black";
-                    ctx.fillText(`${data[i].columns[1]}: ${data[i].data[j].year}`, data[i].positions[j].x + outOfCanvas(clientX, i, data[i]), data[i].positions[j].y + 20);
+                    ctx.fillText(`${data[i].columns[1]}: ${data[i].data[j].year}`, data[i].positions[j].x + outOfCanvas(clientX, i, data[i]), y + 20);
 
                     let margin = 60;
                     for (let a = 0; a < information.length; a++) {
                         ctx.fillStyle = information[a][1];
-                        ctx.fillText(`${information[a][2]}: ${information[a][0]}`, data[i].positions[j].x + outOfCanvas(clientX, i, data[i]), data[i].positions[j].y + margin);
+                        ctx.fillText(`${information[a][2]}: ${information[a][0]}`, data[i].positions[j].x + outOfCanvas(clientX, i, data[i]), y + margin);
                         margin += 20;
 
                     }
-
-
-
+                    break;
                 }
             }
         }

@@ -19,9 +19,12 @@ document.getElementById('save_setting').addEventListener('click', () => {
 
     settings[0] = document.getElementById('fontsize').value;
     ctx.font = `${settings[0]}px Arial`;
-    settings[1] = document.getElementById('color').value;
     settings[2] = document.getElementById('spacing').value;
     settings[3] = document.getElementById('dot_spacing').value;
+
+
+    settings[4] = document.getElementById('yvaluecount').checked;
+    settings[5] = document.getElementById('yvaluelines').checked;
 
     //draw graph with new settings and close the menu
     drawGraph();

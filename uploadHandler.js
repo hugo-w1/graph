@@ -47,11 +47,11 @@ document.getElementById('paste_upload').addEventListener('change', (e) => {
 
 function identifyKeyValue(json) {
 
-    let Xcol = json.columns.length - 2;
-    let Ycol = json.columns.length - 1;
+    let Xcol = json.columns.length - 2; //col 1
+    let Ycol = json.columns.length - 1; //col2
 
-    let x_key = json.columns[Xcol].text; //column for x-text
-    let y_key = json.columns[Ycol].text; //column for y-text
+    let x_key = json.columns[Xcol].text; //column for x-text col 3
+    let y_key = json.columns[Ycol].text; //column for y-text col 4
 
     return ([Xcol, Ycol, x_key, y_key]);
 }
