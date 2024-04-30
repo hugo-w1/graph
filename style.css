@@ -6,7 +6,9 @@ main {
     display: flex;
     align-items: flex-start;
 }
-
+#edit{
+    font-size: 22px;
+}
 canvas {
     background-color: white;
     cursor: crosshair;
@@ -34,16 +36,7 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 
-#menu {
-    display: flex;
-    border: 5px solid;
-    position: absolute;
-    width: 800px;
-    height: 500px;
-    background-color: gray;
-}
-
-#upload_menu {
+#menu, #upload_menu, #edit_menu {
     display: flex;
     border: 5px solid;
     position: absolute;

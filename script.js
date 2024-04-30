@@ -41,7 +41,7 @@ class dataClass {
 
 let data = [];
 
-loadFile('habo_invPerKm2.json');
+//loadFile('habo_invPerKm2.json');
 loadFile('jönköping_invPerKm2.json');
 
 async function loadFile(file) {
@@ -283,19 +283,29 @@ cvs.addEventListener('mousemove', (e) => {
 });
 
 
+
 function addToTable(newData) {
 
     let tr = document.createElement('tr');
-    let td1 = document.createElement('td')
-    let td2 = document.createElement('td')
+    let td1 = document.createElement('td');
+    let td2 = document.createElement('td');
+    let td3 = document.createElement('td');
+
 
     td1.innerHTML = newData.id;
     td2.innerHTML = newData.info[0];
     td1.style.color = newData.color;
     td2.style.color = newData.color;
+    td3.innerHTML = `<button id="edit" dataId="${newData.id}" >🛠</button>`;
 
-    tr.append(td1, td2);
+    td3.addEventListener('click', (e) => {
+        editData(e);
+        
+    });
+
+    tr.append(td1, td2, td3);
     document.getElementById('table').appendChild(tr);
+
 
 
 }

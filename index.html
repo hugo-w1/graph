@@ -9,6 +9,7 @@
     <script src="script.js" defer></script>
     <script src="menuHandler.js" defer></script>
     <script src="uploadHandler.js" defer></script>
+    <script src="editData.js" defer></script>
     <title>Graph</title>
 </head>
 
@@ -20,8 +21,9 @@
 
         <div>
             <table id="table">
-                <th>*</th>
+                <th>Id</th>
                 <th>Data</th>
+                <th>Edit</th>
             </table>
         </div>
 
@@ -90,6 +92,13 @@
             <div class="bottom">
                 <button class="cancel" id="cancel_upload">Cancel</button>
                 <button class="save" id="save_upload">Save</button>
+            </div>
+        </div>
+
+        <div id="edit_menu" style="display: none;">
+            <div class="bottom">
+                <button class="cancel" id="cancel_edit">Cancel</button>
+                <button class="save" id="save_edit">Save</button>
             </div>
         </div>
 

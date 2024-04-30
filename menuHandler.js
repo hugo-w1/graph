@@ -38,3 +38,11 @@ document.getElementById('upload_data').addEventListener('click', () => {
 document.getElementById('cancel_upload').addEventListener('click', () => {
     document.getElementById('upload_menu').style.display = 'none';
 });
+
+
+
+//edit menu opener is applied at addToTable(parmam) (script.js)
+document.getElementById('cancel_edit').addEventListener('click', () => {
+    document.getElementById('edit_menu').style.display = 'none';
+});
+
