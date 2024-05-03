@@ -26,12 +26,16 @@ class dataClass {
 
     }
 
-    constructor(columns, info, data) {
+    constructor(columns, info, data, id) {
         this.columns = columns;
         this.info = info;
         this.data = data;
         this.positions = [];
-        this.id = this.#generateId();
+        if (id == null) {
+            this.id = this.#generateId();
+        } else {
+            this.id = id;
+        }
         this.color = this.#setColor(this.id);
 
     }
@@ -64,14 +68,14 @@ async function loadFile(file) {
             let newData = new dataClass(
                 [response.columns[2].text, response.columns[1].text],
                 [response.metadata[0].label],
-                newGraphData
+                newGraphData, null
             );
             data.push(newData);
-            addToTable(newData);
-
+            updateTable();
         });
-    drawGraph();
     calculateGraphPositions();
+    drawGraph();
+
 }
 
 
@@ -145,6 +149,7 @@ function drawGraph() {
     //draw graph
     for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data[i].positions.length; j++) {
+
             ctx.beginPath();
             if (j == 0) {
                 ctx.lineTo(data[i].positions[j].x, data[i].positions[j].y);
@@ -161,7 +166,9 @@ function drawGraph() {
                 ctx.fillStyle = 'black';
                 ctx.fillText(data[i].data[j].year, data[i].positions[j].x, cvs.height - 20);
             }
+            ctx.strokeStyle = data[i].color;
             ctx.stroke();
+
         }
     }
 }
@@ -203,6 +210,7 @@ function calculateGraph(graphData, totalGraphData) {
  * @param {int} clientX cursor x positon on canvas
  */
 function drawGraphInteraction(clientX) {
+    ctx.strokeStyle = 'black';
     if (data.length > 1) {
         for (let i = data.length - 1; i >= data.length - 1; i--) {
             //loop over postisions
@@ -283,30 +291,30 @@ cvs.addEventListener('mousemove', (e) => {
 });
 
 
+function updateTable() {
 
-function addToTable(newData) {
+    document.getElementById('table').innerHTML = "<th>Id</th><th>Data</th><th>Edit</th>";
 
-    let tr = document.createElement('tr');
-    let td1 = document.createElement('td');
-    let td2 = document.createElement('td');
-    let td3 = document.createElement('td');
+    for (let i = 0; i < data.length; i++) {
 
+        let tr = document.createElement('tr');
+        let td1 = document.createElement('td');
+        let td2 = document.createElement('td');
+        let td3 = document.createElement('td');
 
-    td1.innerHTML = newData.id;
-    td2.innerHTML = newData.info[0];
-    td1.style.color = newData.color;
-    td2.style.color = newData.color;
-    td3.innerHTML = `<button id="edit" dataId="${newData.id}" >🛠</button>`;
+        td1.innerHTML = data[i].id;
+        td2.innerHTML = data[i].info[0];
+        td1.style.color = data[i].color;
+        td2.style.color = data[i].color;
+        td3.innerHTML = `<button id="edit" dataId="${data[i].id}" >🛠</button>`;
 
-    td3.addEventListener('click', (e) => {
-        editData(e);
-        
-    });
+        td3.addEventListener('click', (e) => {
+            editData(e);
 
-    tr.append(td1, td2, td3);
-    document.getElementById('table').appendChild(tr);
+        });
 
-
-
+        tr.append(td1, td2, td3);
+        document.getElementById('table').appendChild(tr);
+    }
 }
 

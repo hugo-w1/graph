@@ -15,17 +15,22 @@
 
 <body>
     <main>
-        <canvas id="cvs" width="700" height="400"></canvas>
-        <button id="settings">settings</button>
-        <button id="upload_data">Upload data</button>
-
         <div>
-            <table id="table">
-                <th>Id</th>
-                <th>Data</th>
-                <th>Edit</th>
-            </table>
+            <canvas id="cvs" width="700" height="400"></canvas>
         </div>
+        <div>
+            <button id="settings">settings</button>
+            <button id="upload_data">Upload data</button>
+
+            <div>
+                <table id="table">
+                    <th>Id</th>
+                    <th>Data</th>
+                    <th>Edit</th>
+                </table>
+            </div>
+        </div>
+
 
         <div id="menu" style="display: none;">
             <div class="top">
@@ -59,7 +64,7 @@
                     <label for="yvaluelines">Y-value Lines</label>
                     <input type="checkbox" name="yvaluelines" id="yvaluelines">
                 </div>
-                
+
             </div>
             <div class="bottom">
                 <button class="cancel" id="cancel_setting">Cancel</button>
@@ -96,6 +101,15 @@
         </div>
 
         <div id="edit_menu" style="display: none;">
+            <button type="button" class="collapsible">Data ></button>
+            <div class="content">
+                <table id="edit_table">
+                    <th>X</th>
+                    <th>Y</th>
+                </table>
+            </div>
+
+
             <div class="bottom">
                 <button class="cancel" id="cancel_edit">Cancel</button>
                 <button class="save" id="save_edit">Save</button>

@@ -19,10 +19,10 @@ document.getElementById('save_upload').addEventListener('click', () => {
     let newData = new dataClass(
         [json.columns[col2].text, json.columns[1].text],
         [json.metadata[0].label],
-        newGraphData
+        newGraphData, null
     );
     data.push(newData);
-    addToTable(newData);
+    updateTable();
 
     calculateGraphPositions();
 
