@@ -2,6 +2,9 @@ let cvs = document.getElementById('cvs');
 let ctx = cvs.getContext('2d');
 ctx.font = "20px Arial";
 
+
+let contenxtMenuOpen = false;
+
 let settings = [
     20, //font size
     'red', //font color [not editable]
@@ -10,6 +13,12 @@ let settings = [
     false, // y-value-count
     false // y-value-lines
 ];
+
+if (localStorage.getItem('settings') == null) {
+    localStorage.setItem('settings', JSON.stringify(settings))
+} else {
+    settings = JSON.parse(localStorage.getItem('settings'));
+}
 
 class dataClass {
     #setColor(id) {
@@ -23,7 +32,6 @@ class dataClass {
 
     #generateId() {
         return data.length;
-
     }
 
     constructor(columns, info, data, id) {
@@ -42,11 +50,20 @@ class dataClass {
 
 }
 
-
 let data = [];
 
+if (localStorage.getItem('data') == null) {
+    localStorage.setItem('data', JSON.stringify(data))
+} else {
+    data = JSON.parse(localStorage.getItem('data'));
+
+    updateTable();
+    drawGraph();
+}
+
+
 //loadFile('habo_invPerKm2.json');
-loadFile('jönköping_invPerKm2.json');
+//loadFile('jönköping_invPerKm2.json');
 
 async function loadFile(file) {
     //fetch file
@@ -74,6 +91,9 @@ async function loadFile(file) {
             updateTable();
         });
     calculateGraphPositions();
+
+    localStorage.setItem('data', JSON.stringify(data))
+
     drawGraph();
 
 }
@@ -282,18 +302,28 @@ cvs.addEventListener('mousemove', (e) => {
         drawGraph();
     }
 
-    drawGraphInteraction(e.clientX);
+    if (contenxtMenuOpen) {
+        contenxtMenuOpen = false;
+    } else {
+        drawGraphInteraction(e.clientX);
+        ctx.beginPath();
+        ctx.moveTo(e.clientX, 0);
+        ctx.lineTo(e.clientX, cvs.height);
+        ctx.stroke();
+    }
+});
 
-    ctx.beginPath();
-    ctx.moveTo(e.clientX, 0);
-    ctx.lineTo(e.clientX, cvs.height);
-    ctx.stroke();
+
+//re render graph if user right clicks
+cvs.addEventListener('contextmenu', () => {
+    contenxtMenuOpen = true;
+    drawGraph();
 });
 
 
 function updateTable() {
 
-    document.getElementById('table').innerHTML = "<th>Id</th><th>Data</th><th>Edit</th>";
+    document.getElementById('table').innerHTML = "<th>Id</th><th>Data</th><th>Edit</th><th>Delete</th>";
 
     for (let i = 0; i < data.length; i++) {
 
@@ -301,6 +331,7 @@ function updateTable() {
         let td1 = document.createElement('td');
         let td2 = document.createElement('td');
         let td3 = document.createElement('td');
+        let td4 = document.createElement('td');
 
         td1.innerHTML = data[i].id;
         td2.innerHTML = data[i].info[0];
@@ -313,7 +344,24 @@ function updateTable() {
 
         });
 
-        tr.append(td1, td2, td3);
+        td4.innerHTML = `<button id="delete" dataId="${data[i].id}" >Delete</button>`;
+
+        td4.addEventListener('click', (e) => {
+            let dataId = e.target.getAttribute('dataId');
+
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].id == dataId) {
+                    data.splice(i, 1);
+                    break;
+                }
+            }
+
+            localStorage.setItem('data', JSON.stringify(data));
+            updateTable();
+            drawGraph();
+        });
+
+        tr.append(td1, td2, td3, td4);
         document.getElementById('table').appendChild(tr);
     }
 }

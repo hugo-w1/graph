@@ -1,4 +1,17 @@
 document.getElementById('settings').addEventListener('click', () => {
+
+    document.getElementById('fontsize').value = settings[0];
+    document.getElementById('spacing').value = settings[2];
+
+    document.getElementById('space_amount').innerHTML = settings[2];
+
+    
+    document.getElementById('dot_spacing').value = settings[3];
+
+    document.getElementById('yvaluecount').checked = settings[4];
+    document.getElementById('yvaluelines').checked = settings[5];
+
+
     document.getElementById('menu').style.display = 'block';
 });
 
@@ -25,6 +38,8 @@ document.getElementById('save_setting').addEventListener('click', () => {
 
     settings[4] = document.getElementById('yvaluecount').checked;
     settings[5] = document.getElementById('yvaluelines').checked;
+
+    localStorage.setItem('settings', JSON.stringify(settings))
 
     //draw graph with new settings and close the menu
     drawGraph();

@@ -23,8 +23,10 @@ document.getElementById('save_upload').addEventListener('click', () => {
     );
     data.push(newData);
     updateTable();
-
     calculateGraphPositions();
+
+    localStorage.setItem('data', JSON.stringify(data))
+
 
     drawGraph();
     document.getElementById('upload_menu').style.display = 'none';
