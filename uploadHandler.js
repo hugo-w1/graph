@@ -15,21 +15,25 @@ document.getElementById('save_upload').addEventListener('click', () => {
             year: element.key[col3]
         });
     });
+    if (data.length > 3) {
+        alert('Data limit reached, You cant have more than 4 graphs at once.')
+    } else {
 
-    let newData = new dataClass(
-        [json.columns[col2].text, json.columns[1].text],
-        [json.metadata[0].label],
-        newGraphData, null
-    );
-    data.push(newData);
-    updateTable();
-    calculateGraphPositions();
+        let newData = new dataClass(
+            [json.columns[col2].text, json.columns[1].text],
+            [json.metadata[0].label],
+            newGraphData, null
+        );
+        data.push(newData);
+        updateTable();
+        calculateGraphPositions();
 
-    localStorage.setItem('data', JSON.stringify(data))
+        localStorage.setItem('data', JSON.stringify(data))
 
 
-    drawGraph();
-    document.getElementById('upload_menu').style.display = 'none';
+        drawGraph();
+        document.getElementById('upload_menu').style.display = 'none';
+    }
 
 });
 

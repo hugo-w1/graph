@@ -20,18 +20,42 @@ if (localStorage.getItem('settings') == null) {
     settings = JSON.parse(localStorage.getItem('settings'));
 }
 
+let data = [];
+
+if (localStorage.getItem('data') == null) {
+    localStorage.setItem('data', JSON.stringify(data))
+} else {
+    data = JSON.parse(localStorage.getItem('data'));
+
+    updateTable();
+    drawGraph();
+}
+
 class dataClass {
     #setColor(id) {
         if (id > 3) {
             console.log('limit reached!');
             return;
         }
-        let colors = ['red', 'blue', 'purple', 'green'];
+        let colors = ['red', 'blue', 'green', 'purple'];
         return colors[id];
     }
 
     #generateId() {
-        return data.length;
+        if (data.length == 0) {
+            return 0;
+        }
+        for (let i = 0; i < 4; i++) {
+            let n = 0;
+            for (let j = 0; j < data.length; j++) {
+                if (i != data[j].id) {
+                    n++;
+                }
+            }
+            if (n == data.length) {
+                return i;
+            }
+        }
     }
 
     constructor(columns, info, data, id) {
@@ -48,17 +72,6 @@ class dataClass {
 
     }
 
-}
-
-let data = [];
-
-if (localStorage.getItem('data') == null) {
-    localStorage.setItem('data', JSON.stringify(data))
-} else {
-    data = JSON.parse(localStorage.getItem('data'));
-
-    updateTable();
-    drawGraph();
 }
 
 
@@ -182,9 +195,12 @@ function drawGraph() {
                 ctx.arc(data[i].positions[j].x, data[i].positions[j].y, 3, 0, 2 * Math.PI);
             }
 
-            if (j % settings[2] == 0) {
-                ctx.fillStyle = 'black';
-                ctx.fillText(data[i].data[j].year, data[i].positions[j].x, cvs.height - 20);
+            //only draw xvalue (year count) one time
+            if (i < 1) {
+                if (j % settings[2] == 0) {
+                    ctx.fillStyle = 'black';
+                    ctx.fillText(data[i].data[j].year, data[i].positions[j].x, cvs.height - 20);
+                }
             }
             ctx.strokeStyle = data[i].color;
             ctx.stroke();

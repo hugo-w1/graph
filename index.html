@@ -10,6 +10,7 @@
     <script src="menuHandler.js" defer></script>
     <script src="uploadHandler.js" defer></script>
     <script src="editData.js" defer></script>
+    <script src="exportImage.js" defer></script>
     <title>Graph</title>
 </head>
 
@@ -17,9 +18,14 @@
     <main>
         <div>
             <canvas id="cvs" width="700" height="400"></canvas>
+            <div>
+            <button id="export">Export Png</button>
+            <button id="copy">Copy to Clipboard</button>
+        </div>
+
         </div>
         <div>
-            <button id="settings">settings</button>
+            <button id="settings">Settings</button>
             <button id="upload_data">Upload data</button>
 
             <div>
