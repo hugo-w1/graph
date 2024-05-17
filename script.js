@@ -2,7 +2,6 @@ let cvs = document.getElementById('cvs');
 let ctx = cvs.getContext('2d');
 ctx.font = "20px Arial";
 
-
 let contenxtMenuOpen = false;
 
 let settings = [
@@ -141,7 +140,7 @@ function outOfCanvas(clientX, i, graphData) {
     //make the text not go outside screen
     if (clientX >= cvs.width / 1.5) {
         //calculate offset with fontsize
-        let offset = (graphData.data[i].count.toString().length + graphData.columns[0].length) * settings[0] / 1.5;
+        let offset = (graphData.data[i].count.toString().length + graphData.columns[0].length) * settings[0] * 1.3;
         return -offset;
     } else {
         return 10;
@@ -150,6 +149,7 @@ function outOfCanvas(clientX, i, graphData) {
 
 function drawGraph() {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
+
 
     let drawnValues = [];
     ctx.fillStyle = 'black';
@@ -235,9 +235,6 @@ function calculateGraph(graphData, totalGraphData) {
     }
 
     return positions;
-
-    //drawGraph();
-
 }
 
 /**
@@ -257,12 +254,10 @@ function drawGraphInteraction(clientX) {
 
                     //assing y as an dynamic int
                     let y = data[i].positions[j].y;
-                    if (y > 255) {
+                    if (y > 210) {
                         //do not make y go under screen
-                        y = 255;
+                        y = 210;
                     }
-
-                    console.log(y);
 
                     //multi dimensional graph data
                     for (let k = data.length - 1; k >= 0; k--) {
@@ -313,6 +308,7 @@ function drawGraphInteraction(clientX) {
 //mouse events on canvas
 cvs.addEventListener('mousemove', (e) => {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
+    console.log(3324);
 
     if (data.length > 0) {
         drawGraph();
@@ -371,6 +367,7 @@ function updateTable() {
                     break;
                 }
             }
+            calculateGraphPositions();
 
             localStorage.setItem('data', JSON.stringify(data));
             updateTable();

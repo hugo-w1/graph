@@ -69,7 +69,7 @@ function fuseData(newDataCount) {
     data.push(newData);
 
     updateTable();
-    calculateGraphPositions()
+    calculateGraphPositions();
     drawGraph();
 
 
