@@ -3,9 +3,6 @@ console.log(isMobile);
 if (isMobile) {
     alert('This Website is Not optimized for mobile use, Please Leave!');
     window.location = 'http://www.google.com';
-}else{
-    alert("leave");
-    window.location = 'http://www.google.com';
 }
 
 let cvs = document.getElementById('cvs');
