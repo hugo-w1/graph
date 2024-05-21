@@ -2,7 +2,7 @@ const isMobile = navigator.userAgentData.mobile;
 console.log(isMobile);
 if (isMobile) {
     alert('This Website is Not optimized for mobile use, Please Leave!');
-    window.location = 'http://www.google.com';
+    window.location = 'about:blank';
 }
 
 let cvs = document.getElementById('cvs');
