@@ -1,5 +1,4 @@
 const isMobile = navigator.userAgentData.mobile;
-console.log(isMobile);
 if (isMobile) {
     alert('This Website is Not optimized for mobile use, Please Leave!');
     window.location = 'about:blank';
@@ -40,7 +39,6 @@ if (localStorage.getItem('data') == null) {
 class dataClass {
     #setColor(id) {
         if (id > 3) {
-            console.log('limit reached!');
             return;
         }
         let colors = ['red', 'blue', 'green', 'purple'];
@@ -89,8 +87,6 @@ async function loadFile(file) {
     await fetch(file)
         .then(response => response.json())
         .then(response => {
-            console.log(response);
-
             let newGraphData = [];
 
             response.data.forEach(element => {
@@ -99,8 +95,6 @@ async function loadFile(file) {
                     year: element.key[1]
                 });
             });
-            console.log(newGraphData);
-
             let newData = new dataClass(
                 [response.columns[2].text, response.columns[1].text],
                 [response.metadata[0].label],
@@ -221,12 +215,10 @@ function calculateGraph(graphData, totalGraphData) {
     let positions = [];
 
     //canvas scale 
-    console.log(graphData);
     let xScale = cvs.width / (graphData.length + 5); // add margin with 5 on both scales
     let yScale = cvs.height / (maxYCount(totalGraphData) + 5);
 
 
-    console.log(yScale)
     //starting pos  
     let canvasX = xScale + 50;
     let canvasY = cvs.height + yScale;
@@ -268,7 +260,6 @@ function drawGraphInteraction(clientX) {
 
                     //multi dimensional graph data
                     for (let k = data.length - 1; k >= 0; k--) {
-                        console.log(data[i - k].data[j].count + ' :' + k);
                         information.push([data[i - k].data[j].count, data[i - k].color, data[i - k].columns[0]]);
                     }
 
@@ -315,7 +306,6 @@ function drawGraphInteraction(clientX) {
 //mouse events on canvas
 cvs.addEventListener('mousemove', (e) => {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
-    console.log(3324);
 
     if (data.length > 0) {
         drawGraph();
