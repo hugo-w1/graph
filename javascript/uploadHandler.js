@@ -19,12 +19,14 @@ document.getElementById('save_upload').addEventListener('click', () => {
         alert('Data limit reached, You cant have more than 4 graphs at once.')
     } else {
 
+        //create a new dataClass and add it to the data array.
         let newData = new dataClass(
             [json.columns[col2].text, json.columns[1].text],
             [json.metadata[0].label],
             newGraphData, null
         );
         data.push(newData);
+        //refresh and render graph
         updateTable();
         calculateGraphPositions();
 

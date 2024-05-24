@@ -36,7 +36,15 @@ if (localStorage.getItem('data') == null) {
     drawGraph();
 }
 
+/**
+ * This class is used to store all of the data represented on the canvas.
+ */
 class dataClass {
+    /**
+     * A private method to give colors.
+     * @param {*} id the id of the class object
+     * @returns a color based on the id
+     */
     #setColor(id) {
         if (id > 3) {
             return;
@@ -45,6 +53,11 @@ class dataClass {
         return colors[id];
     }
 
+    /**
+     * Private method
+     * Creates uniqe ids spanning from 0-3 (4 uniqe ids)
+     * @returns a uniqe id
+     */
     #generateId() {
         if (data.length == 0) {
             return 0;
@@ -61,7 +74,13 @@ class dataClass {
             }
         }
     }
-
+    /**
+     * Constructor for the data class
+     * @param {*} columns Columns from the json file
+     * @param {*} info Information about the data in the json, such as title/name of the data.
+     * @param {*} data The data from the json 
+     * @param {*} id Uniqe id for every dataclass in the data array
+     */
     constructor(columns, info, data, id) {
         this.columns = columns;
         this.info = info;
@@ -79,9 +98,10 @@ class dataClass {
 }
 
 
-//loadFile('habo_invPerKm2.json');
-//loadFile('jönköping_invPerKm2.json');
-
+/** 
+ * @param {*} file path to the json file.
+ * Load a local json file into the DataClass.
+ */
 async function loadFile(file) {
     //fetch file
     await fetch(file)
@@ -112,7 +132,9 @@ async function loadFile(file) {
 }
 
 
-
+/**
+ * Calculates the positons that are drawn out on the canvas using the data field from the DataClass.
+ */
 function calculateGraphPositions() {
     let totalGraphData = [];
     for (let i = 0; i < data.length; i++) {
@@ -126,7 +148,11 @@ function calculateGraphPositions() {
 }
 
 
-
+/**
+ * 
+ * @param {*} totalGraphData Total data from all of the DataClass 
+ * @returns 
+ */
 function maxYCount(totalGraphData) {
     let max = 0;
     for (let i = 0; i < totalGraphData.length; i++) {
@@ -137,6 +163,13 @@ function maxYCount(totalGraphData) {
     return max;
 }
 
+/**
+ * Makes sure that the informaiton text dosent go outside of the canvas.
+ * @param {*} clientX //Client mouse position
+ * @param {*} i // Data array index
+ * @param {*} graphData 
+ * @returns 
+ */
 function outOfCanvas(clientX, i, graphData) {
     //make the text not go outside screen
     if (clientX >= cvs.width / 1.5) {
@@ -148,9 +181,11 @@ function outOfCanvas(clientX, i, graphData) {
     }
 }
 
+/**
+ * This function handels the rendering on the canvas.
+ */
 function drawGraph() {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
-
 
     let drawnValues = [];
     ctx.fillStyle = 'black';
@@ -162,10 +197,12 @@ function drawGraph() {
             if (j % 10 == 0) {
 
                 if (!drawnValues.includes(data[i].data[j].count)) {
+                    //draws the  y-value count to the left if the setting is true
                     if (settings[4]) {
                         ctx.fillText(data[i].data[j].count, 5, data[i].positions[j].y);
                     }
 
+                    //draws the y-value lines if the setting is true
                     if (settings[5]) {
                         ctx.moveTo(0, data[i].positions[j].y);
                         ctx.lineTo(cvs.width, data[i].positions[j].y);
@@ -196,7 +233,7 @@ function drawGraph() {
                 ctx.arc(data[i].positions[j].x, data[i].positions[j].y, 3, 0, 2 * Math.PI);
             }
 
-            //only draw xvalue (year count) one time
+            //only draw xvalue (year count) one time (so that it doest draw muliple years on top of eachother).
             if (i < 1) {
                 if (j % settings[2] == 0) {
                     ctx.fillStyle = 'black';
@@ -210,6 +247,12 @@ function drawGraph() {
     }
 }
 
+/**
+ * 
+ * @param {*} graphData
+ * @param {*} totalGraphData 
+ * @returns An array of postions where the lines should be drawn inbetween.
+ */
 function calculateGraph(graphData, totalGraphData) {
 
     let positions = [];
@@ -330,6 +373,9 @@ cvs.addEventListener('contextmenu', () => {
 });
 
 
+/**
+ * Represents the current graph(s) displayed on the canvas on a table.  
+ */
 function updateTable() {
 
     document.getElementById('table').innerHTML = "<th>Id</th><th>Data</th><th>Edit</th><th>Delete</th>";
@@ -355,6 +401,7 @@ function updateTable() {
 
         td4.innerHTML = `<button id="delete" dataId="${data[i].id}" >Delete</button>`;
 
+        //click event on the Delete button, and deletes the graph then renders the new graphData.
         td4.addEventListener('click', (e) => {
             let dataId = e.target.getAttribute('dataId');
 

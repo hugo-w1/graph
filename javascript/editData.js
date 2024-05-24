@@ -16,6 +16,11 @@ function editData(e) {
 }
 
 
+/**
+ * 
+ * @param {*} newData  The data to add to the editable columns 
+ * @param {*} elementId // Element id of the column
+ */
 function addToEditMeny(newData, elementId) {
     let tr = document.createElement('tr');
     let td1 = document.createElement('td');
@@ -44,6 +49,10 @@ document.getElementById('save_edit').addEventListener('click', () => {
     document.getElementById('edit_table').innerHTML = "<th>X</th><th>Y</th>";
 });
 
+/**
+ * @param {*} newDataCount 
+ * Merges the new data with the current data.
+ */
 function fuseData(newDataCount) {
     let newGraphData = [];
 
@@ -68,6 +77,7 @@ function fuseData(newDataCount) {
 
     data.push(newData);
 
+    //refresh and render the new graph data
     updateTable();
     calculateGraphPositions();
     drawGraph();

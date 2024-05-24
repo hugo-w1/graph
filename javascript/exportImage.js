@@ -17,6 +17,8 @@ document.getElementById('export').addEventListener('click', () => {
     }
 });
 
+
+// make the text on the copy button say "Copied!" when clicked
 document.getElementById('copy').addEventListener('click', (e) => {
     drawGraph();
     drawGraph();
